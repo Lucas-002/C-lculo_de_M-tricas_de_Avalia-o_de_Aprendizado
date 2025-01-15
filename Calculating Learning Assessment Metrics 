@@ -1,0 +1,56 @@
+import numpy as np
+import pandas as pd
+
+# Funções para calcular as métricas de classificação
+def calcular_sensibilidade(vp, fn):
+    """Calcula a sensibilidade (recall)"""
+    return vp / (vp + fn) if (vp + fn) > 0 else 0
+
+def calcular_especificidade(vn, fp):
+    """Calcula a especificidade"""
+    return vn / (fp + vn) if (fp + vn) > 0 else 0
+
+def calcular_acuracia(vp, vn, n):
+    """Calcula a acurácia"""
+    return (vp + vn) / n if n > 0 else 0
+
+def calcular_precisao(vp, fp):
+    """Calcula a precisão"""
+    return vp / (vp + fp) if (vp + fp) > 0 else 0
+
+def calcular_fscore(precisao, sensibilidade):
+    """Calcula o F-score"""
+    return 2 * (precisao * sensibilidade) / (precisao + sensibilidade) if (precisao + sensibilidade) > 0 else 0
+
+# Função principal para exibir as métricas com base na matriz de confusão
+def calcular_metricas(vp, vn, fp, fn):
+    """Calcula todas as métricas de classificação"""
+    n = vp + vn + fp + fn
+    sensibilidade = calcular_sensibilidade(vp, fn)
+    especificidade = calcular_especificidade(vn, fp)
+    acuracia = calcular_acuracia(vp, vn, n)
+    precisao = calcular_precisao(vp, fp)
+    fscore = calcular_fscore(precisao, sensibilidade)
+
+    return {
+        "Sensibilidade": sensibilidade,
+        "Especificidade": especificidade,
+        "Acurácia": acuracia,
+        "Precisão": precisao,
+        "F-score": fscore,
+    }
+
+# Exemplo de matriz de confusão
+# Valores arbitrários
+vp = 50  # Verdadeiros positivos
+vn = 40  # Verdadeiros negativos
+fp = 10  # Falsos positivos
+fn = 5   # Falsos negativos
+
+# Calculando as métricas
+metricas = calcular_metricas(vp, vn, fp, fn)
+
+# Exibindo os resultados
+print("Métricas de Avaliação:\n")
+for metrica, valor in metricas.items():
+    print(f"{metrica}: {valor:.2f}")
